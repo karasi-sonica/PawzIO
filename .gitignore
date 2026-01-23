@@ -1,0 +1,15 @@
+# dependencies
+node_modules
+
+# env files
+.env
+
+# Next.js
+.next
+out
+
+# NestJS
+dist
+
+# OS
+.DS_Store
