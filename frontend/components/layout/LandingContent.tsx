@@ -64,7 +64,7 @@ export default function LandingContent() {
           className="flex items-center justify-center gap-8 text-sm text-gray-600"
         >
           <div className="flex items-center gap-2">
-            <PawPrint className="h-5 w-5 text-amber-400" />
+            <PawPrint className="h-5 w-5 text-amber-400 fill-amber-400" />
             <span>100% Trusted</span>
           </div>
           <div className="flex items-center gap-2">

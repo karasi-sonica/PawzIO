@@ -18,7 +18,7 @@ export default function Header() {
             animate={{ scale: [1, 1.1, 1], rotate: [-10, 0, 10] }}
             transition={{ duration: 3, repeat: Infinity }}
           >
-            <PawPrint className="h-5 w-5 text-rose-400" />
+            <PawPrint className="h-5 w-5 text-rose-400 fill-rose-400" />
           </motion.div>
 
           {/* Logo Text */}
@@ -34,7 +34,7 @@ export default function Header() {
             animate={{ scale: [1, 1.1, 1], rotate: [10, 0, -10] }}
             transition={{ duration: 3, repeat: Infinity, delay: 0.3 }}
           >
-            <PawPrint className="h-5 w-5 text-amber-400" />
+            <PawPrint className="h-5 w-5 text-amber-400 fill-amber-400" />
           </motion.div>
         </div>
       </div>

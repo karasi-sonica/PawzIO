@@ -1,17 +1,20 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { Stethoscope, CheckCircle, Clock, ArrowRight, Upload } from 'lucide-react'
+import { Stethoscope, Clock, ArrowRight, Upload } from 'lucide-react'
 import { useState } from 'react'
+import { CheckCircle } from 'lucide-react';
+
 
 export default function DoctorOnboarding() {
-  const [step, setStep] = useState<'choice' | 'new' | 'existing' | 'pending' | 'dashboard'>('choice')
+  const [step, setStep] = useState<'choice' | 'new' | 'existing' | 'pending' | 'verified' | 'dashboard'>('choice')
   const [formData, setFormData] = useState({
     name: '',
     qualification: '',
     licenseNumber: '',
     clinicName: '',
   })
+  const [doctorName, setDoctorName] = useState('')
 
   const handleNewDoctor = () => {
     setStep('new')
@@ -28,6 +31,8 @@ export default function DoctorOnboarding() {
 
   const handleSubmitNewDoctor = (e: React.FormEvent) => {
     e.preventDefault()
+    // Store doctor name for later display
+    setDoctorName(formData.name)
     // Simulate submission
     setStep('pending')
   }
@@ -299,26 +304,32 @@ export default function DoctorOnboarding() {
                 <Clock className="h-10 w-10 text-orange-600" />
               </motion.div>
 
-              <h2 className="text-3xl font-bold text-gray-800 mb-3">
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">
                 Verification Pending
               </h2>
               <p className="text-gray-600 mb-8">
-                Thank you for registering! Your profile is under review. We'll verify your credentials within 24-48
-                hours and notify you once approved.
+                Verification mail sent to the team. We'll let you know when you are verified.
               </p>
 
               <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
-                <p className="text-sm text-blue-800">
-                  <strong>What to expect:</strong> Our team will verify your medical credentials and license
-                  number. You'll receive an email confirmation once approved.
+                <p className="text-sm text-blue-800 mb-4">
+                  Our team is reviewing your credentials and will notify you once your profile is verified.
                 </p>
               </div>
 
-              <button
-                onClick={() => setStep('pending')}
-                className="py-3 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-semibold hover:shadow-lg transition-all inline-block"
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                onClick={() => setStep('dashboard')}
+                className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-semibold hover:shadow-lg transition-all mb-4"
               >
-                Check Status Later
+                Go to Dashboard
+              </motion.button>
+
+              <button
+                onClick={() => setStep('choice')}
+                className="text-rose-600 hover:text-rose-700 font-semibold text-sm"
+              >
+                Back to Options
               </button>
             </div>
           </motion.div>
@@ -332,10 +343,69 @@ export default function DoctorOnboarding() {
             animate={{ opacity: 1 }}
             className="max-w-4xl mx-auto px-6 py-20"
           >
-            <h2 className="text-4xl font-bold text-gray-800 mb-2">Welcome to Your Dashboard</h2>
-            <p className="text-lg text-gray-600 mb-12">
-              You're now signed in. Dashboard loading...
-            </p>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-12"
+            >
+              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-green-200 to-emerald-200 flex items-center justify-center mb-6">
+                <CheckCircle className="h-10 w-10 text-green-600" />
+              </div>
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                Welcome, {doctorName || 'Doctor'}!
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Your email has been verified. You can now use the doctor dashboard.
+              </p>
+              <div className="glass-effect rounded-3xl p-8 mb-8">
+                <div className="text-left space-y-4 mb-8">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">Account Details:</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-white/50 rounded-2xl p-4">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Name</p>
+                      <p className="font-semibold text-gray-800">{formData.name}</p>
+                    </div>
+                    <div className="bg-white/50 rounded-2xl p-4">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Qualification</p>
+                      <p className="font-semibold text-gray-800">{formData.qualification}</p>
+                    </div>
+                    <div className="bg-white/50 rounded-2xl p-4">
+                      <p className="text-xs text-gray-500 uppercase mb-1">License Number</p>
+                      <p className="font-semibold text-gray-800">{formData.licenseNumber}</p>
+                    </div>
+                    <div className="bg-white/50 rounded-2xl p-4">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Clinic Name</p>
+                      <p className="font-semibold text-gray-800">{formData.clinicName}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 mb-8">
+                  <p className="text-sm text-yellow-800 mb-2">
+                    <strong>Important:</strong> Your profile is now awaiting final approval from our admin team.
+                  </p>
+                  <p className="text-xs text-yellow-700">
+                    You'll receive a confirmation email within 24-48 hours. Once approved, you'll have full access to the doctor dashboard and can start accepting consultations.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-4">
+                <a
+                  href="/doctor/dashboard"
+                  className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-semibold hover:shadow-lg transition-all inline-block"
+                >
+                  View Doctor Dashboard
+                </a>
+                <a
+                  href="/"
+                  className="flex-1 py-3 px-6 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all inline-block"
+                >
+                  Go Home
+                </a>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
