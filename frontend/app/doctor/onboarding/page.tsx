@@ -231,7 +231,7 @@ export default function DoctorOnboarding() {
 
             <h2 className="text-4xl font-bold text-gray-800 mb-2">Sign In as Doctor</h2>
             <p className="text-lg text-gray-600 mb-8">
-              Use your registered email and password
+              Use your registered name and vetId
             </p>
 
             <form
@@ -246,10 +246,10 @@ export default function DoctorOnboarding() {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email
+                  Name
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   placeholder="doctor@example.com"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500"
                   required
@@ -262,10 +262,10 @@ export default function DoctorOnboarding() {
                 transition={{ delay: 0.1 }}
               >
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Password
+                  vetId
                 </label>
                 <input
-                  type="password"
+                  type="text"
                   placeholder="••••••••"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500"
                   required
