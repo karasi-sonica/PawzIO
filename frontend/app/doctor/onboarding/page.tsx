@@ -10,6 +10,7 @@ export default function DoctorOnboarding() {
   const [step, setStep] = useState<'choice' | 'new' | 'existing' | 'pending' | 'verified' | 'dashboard'>('choice')
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
     qualification: '',
     licenseNumber: '',
     clinicName: '',
@@ -29,12 +30,33 @@ export default function DoctorOnboarding() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmitNewDoctor = (e: React.FormEvent) => {
+  const handleSubmitNewDoctor = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Store doctor name for later display
-    setDoctorName(formData.name)
-    // Simulate submission
-    setStep('pending')
+    
+    try {
+      const response = await fetch('http://localhost:3001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          role: 'VET',
+          password: 'password123', // Hardcoded for now as per current requirements
+        }),
+      });
+
+      if (response.ok) {
+        setDoctorName(formData.name)
+        setStep('pending')
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message || 'Failed to submit'}`);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Could not connect to the server. Make sure the backend is running.');
+    }
   }
 
   const handleGoToDashboard = () => {
@@ -133,7 +155,27 @@ export default function DoctorOnboarding() {
                   value={formData.name}
                   onChange={handleFormChange}
                   placeholder="Dr. Jane Smith"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500 text-black"
+                  required
+                />
+              </motion.div>
+
+              {/* Email */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  placeholder="doctor@example.com"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500 text-black"
                   required
                 />
               </motion.div>
@@ -153,7 +195,7 @@ export default function DoctorOnboarding() {
                   value={formData.qualification}
                   onChange={handleFormChange}
                   placeholder="Doctor of Veterinary Medicine"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500 text-black"
                   required
                 />
               </motion.div>
@@ -173,7 +215,7 @@ export default function DoctorOnboarding() {
                   value={formData.licenseNumber}
                   onChange={handleFormChange}
                   placeholder="VET-2024-12345"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500 text-black"
                   required
                 />
               </motion.div>
@@ -193,7 +235,7 @@ export default function DoctorOnboarding() {
                   value={formData.clinicName}
                   onChange={handleFormChange}
                   placeholder="Happy Paws Clinic"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-rose-500 text-black"
                   required
                 />
               </motion.div>
